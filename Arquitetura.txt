@@ -1,0 +1,793 @@
+Quero que você construa, neste diretório, uma aplicação local completa para gerenciamento e envio de campanhas pelo WhatsApp Web.
+
+Objetivo
+
+Criar uma aplicação que rode no meu próprio computador e tenha:
+
+Importação de contatos por CSV.
+
+Campo para mensagem da campanha.
+
+Upload de uma imagem do produto.
+
+Personalização da mensagem usando o nome do contato.
+
+Pré-visualização da mensagem.
+
+Teste de envio para um único contato antes da campanha.
+
+Execução da campanha pelo WhatsApp Web.
+
+Controle de iniciar, pausar e cancelar.
+
+Registro detalhado dos resultados.
+
+Detecção e tratamento de erros.
+
+Interface visual simples e profissional.
+
+Nenhum backend em nuvem.
+
+Nenhum banco de dados externo.
+
+Nenhuma API paga.
+
+Dados e logs armazenados localmente.
+
+A aplicação deve ser projetada para uso legítimo com contatos que deram consentimento para receber comunicações.
+
+Não implemente mecanismos para:
+
+burlar CAPTCHA;
+
+burlar bloqueios do WhatsApp;
+
+ocultar automação;
+
+contornar limites ou sistemas anti-spam;
+
+criar contas automaticamente;
+
+enviar para números aleatórios obtidos sem consentimento;
+
+tentar evitar detecção da automação.
+
+Se o WhatsApp Web mudar e uma determinada automação deixar de funcionar, registre o erro de forma clara em vez de tentar contornar as proteções.
+
+Stack
+
+Use:
+
+Node.js
+
+TypeScript
+
+Playwright para automação do navegador
+
+React para a interface
+
+Vite
+
+Tailwind CSS
+
+Electron para transformar a aplicação em desktop
+
+Zod para validação
+
+Papa Parse ou biblioteca equivalente para CSV
+
+Vitest para testes
+
+Evite dependências desnecessárias.
+
+A aplicação deve funcionar localmente em Windows, macOS e Linux sempre que possível.
+
+Estrutura
+
+Crie uma estrutura semelhante a:
+
+apishot/
+
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+├── README.md
+├── .gitignore
+├── .env.example
+│
+├── electron/
+│ ├── main.ts
+│ ├── preload.ts
+│ └── ipc.ts
+│
+├── src/
+│ ├── main.tsx
+│ ├── App.tsx
+│ │
+│ ├── components/
+│ │ ├── ContactImporter.tsx
+│ │ ├── MessageEditor.tsx
+│ │ ├── ImageUploader.tsx
+│ │ ├── CampaignPreview.tsx
+│ │ ├── CampaignControls.tsx
+│ │ ├── CampaignProgress.tsx
+│ │ ├── ContactTable.tsx
+│ │ └── LogViewer.tsx
+│ │
+│ ├── services/
+│ │ ├── csvService.ts
+│ │ ├── campaignService.ts
+│ │ ├── whatsappService.ts
+│ │ ├── logger.ts
+│ │ └── validation.ts
+│ │
+│ ├── types/
+│ │ └── index.ts
+│ │
+│ └── styles/
+│ └── index.css
+│
+├── data/
+│ ├── contacts/
+│ ├── campaigns/
+│ ├── media/
+│ └── logs/
+│
+└── tests/
+├── csvService.test.ts
+├── validation.test.ts
+└── campaignService.test.ts
+
+Adapte a estrutura se necessário, mas mantenha uma separação clara entre interface, lógica da campanha e automação do navegador.
+
+Formato dos contatos
+
+Aceite CSV com:
+
+nome,telefone
+
+Exemplo:
+
+nome,telefone
+João,5511999999999
+Maria,5511988888888
+Carlos,5511977777777
+
+Também aceite CSV sem nome:
+
+telefone
+5511999999999
+5511988888888
+
+Normalize os números.
+
+Para o Brasil, aceite formatos como:
+
+11999999999
+5511999999999
++5511999999999
+(11) 99999-9999
+
+Converta internamente para um formato consistente.
+
+Não tente descobrir números ou coletar números da internet.
+
+Validação
+
+Antes da campanha:
+
+validar CSV;
+
+detectar linhas duplicadas;
+
+detectar números vazios;
+
+detectar números obviamente inválidos;
+
+mostrar quantidade válida;
+
+mostrar quantidade inválida;
+
+permitir remover inválidos;
+
+permitir exportar a lista limpa.
+
+Não declarar que um número possui WhatsApp apenas porque passou pela validação sintática.
+
+Mensagens
+
+Permitir variáveis:
+
+{nome}
+
+Exemplo:
+
+Olá, {nome}! 👋
+
+Temos uma novidade para você.
+
+Confira nosso novo produto na imagem abaixo.
+
+Se tiver interesse, responda esta mensagem.
+
+Se o nome não existir, usar:
+
+Olá! 👋
+
+Nunca quebrar a campanha inteira porque um contato não possui nome.
+
+Imagem
+
+Permitir:
+
+JPG
+
+JPEG
+
+PNG
+
+WEBP
+
+Mostrar preview.
+
+Validar tamanho do arquivo.
+
+Armazenar a mídia localmente.
+
+Antes do envio, mostrar:
+
+Mensagem:
+[preview]
+
+Imagem:
+[preview]
+
+Interface
+
+Criar uma interface moderna com as seguintes áreas:
+
+1. Contatos
+
+Mostrar:
+
+quantidade total;
+
+quantidade válida;
+
+quantidade inválida;
+
+quantidade duplicada.
+
+Tabela:
+
+Nome	Telefone	Status
+
+Permitir importar CSV.
+
+2. Mensagem
+
+Editor de texto.
+
+Mostrar as variáveis disponíveis:
+
+{nome}
+
+Ter preview em tempo real.
+
+3. Imagem
+
+Botão:
+
+"Selecionar imagem"
+
+Mostrar preview.
+
+Botão para remover.
+
+4. Teste
+
+Ter uma seção:
+
+"Enviar teste"
+
+Campo:
+
+Número para teste
+
+Botão:
+
+"Enviar teste"
+
+O usuário deve conseguir verificar mensagem e imagem antes de iniciar a campanha.
+
+5. Campanha
+
+Mostrar:
+
+Contatos:
+250
+
+Prontos:
+243
+
+Inválidos:
+7
+
+Botões:
+
+[Iniciar campanha]
+
+[Pause]
+
+[Cancelar]
+
+O botão de iniciar deve exigir uma confirmação explícita.
+
+Exemplo:
+
+"Você está prestes a iniciar uma campanha para 243 contatos. Confirma?"
+
+WhatsApp Web
+
+Usar Playwright.
+
+Abrir uma instância persistente do navegador para que a sessão do WhatsApp Web possa permanecer autenticada localmente.
+
+Na primeira execução:
+
+Abrir WhatsApp Web.
+
+Aguardar o usuário fazer login normalmente.
+
+Não tentar capturar ou armazenar credenciais.
+
+Reutilizar a sessão local nas próximas execuções.
+
+Não implementar login automático.
+
+Não armazenar QR codes, tokens ou credenciais em servidores.
+
+Automação
+
+Criar um módulo:
+
+whatsappService.ts
+
+Com uma interface semelhante a:
+
+interface WhatsAppService {
+connect(): Promise<void>;
+isConnected(): Promise<boolean>;
+sendMessage(contact: Contact, message: string, imagePath?: string): Promise<SendResult>;
+disconnect(): Promise<void>;
+}
+
+A lógica da campanha NÃO deve depender diretamente do Playwright.
+
+Use uma camada de abstração para facilitar testes.
+
+Envio
+
+Para cada contato:
+
+Verificar se a campanha foi cancelada.
+
+Verificar se está pausada.
+
+Preparar a mensagem.
+
+Abrir a conversa correspondente no WhatsApp Web.
+
+Enviar a mensagem e, quando configurada, a imagem.
+
+Registrar resultado.
+
+Atualizar progresso.
+
+Passar para o próximo contato.
+
+Nunca enviar para um contato que esteja marcado como:
+
+blocked
+invalid
+cancelled
+
+Controle de campanha
+
+Estados:
+
+IDLE
+VALIDATING
+READY
+RUNNING
+PAUSED
+CANCELLED
+COMPLETED
+ERROR
+
+Criar uma máquina de estados simples para impedir transições inválidas.
+
+Exemplo:
+
+RUNNING -> PAUSED
+RUNNING -> CANCELLED
+RUNNING -> COMPLETED
+PAUSED -> RUNNING
+PAUSED -> CANCELLED
+
+Pausa
+
+Quando o usuário clicar em "Pausar":
+
+não iniciar novos envios;
+
+terminar de forma segura a operação atual;
+
+marcar campanha como PAUSED.
+
+Ao clicar em continuar:
+
+continuar do próximo contato pendente.
+
+Cancelamento
+
+Ao clicar em cancelar:
+
+interromper o processamento depois que a operação atual terminar de forma segura;
+
+não iniciar novos contatos;
+
+salvar estado da campanha.
+
+Logs
+
+Criar log local em:
+
+data/logs/
+
+Registrar:
+
+timestamp
+campaignId
+contactName
+phone
+status
+error
+duration
+
+Status possíveis:
+
+SUCCESS
+FAILED
+SKIPPED
+INVALID
+CANCELLED
+
+Nunca registrar credenciais ou informações sensíveis da sessão do navegador.
+
+Criar também um resumo:
+
+Total
+Enviados
+Falharam
+Inválidos
+Cancelados
+Pendentes
+
+Persistência
+
+Não usar banco externo.
+
+Pode utilizar JSON local para estado das campanhas.
+
+Exemplo:
+
+data/campaigns/campaign-2026-09-28.json
+
+Guardar:
+
+id;
+
+data;
+
+mensagem;
+
+imagem;
+
+contatos;
+
+status;
+
+progresso;
+
+resultados.
+
+Se a aplicação fechar inesperadamente, tentar recuperar o estado da última campanha de maneira segura.
+
+Segurança
+
+Criar:
+
+.env.example
+
+Não colocar credenciais no código.
+
+Adicionar ao .gitignore:
+
+.env
+data/
+node_modules/
+dist/
+
+Não transmitir os contatos para qualquer serviço externo.
+
+Não implementar analytics externos.
+
+Respeito ao usuário
+
+Adicionar na interface uma configuração:
+
+"Somente enviar para contatos que autorizaram receber mensagens."
+
+Ela deve ficar marcada por padrão.
+
+Também adicionar suporte a uma coluna opcional:
+
+optIn
+
+Exemplo:
+
+nome,telefone,optIn
+João,5511999999999,true
+Maria,5511988888888,false
+
+Por padrão, somente:
+
+optIn=true
+
+pode ser enviado.
+
+Se a coluna não existir, mostrar um aviso informando que o usuário precisa confirmar que todos os contatos possuem autorização antes de iniciar.
+
+Não inventar consentimento.
+
+Lista de bloqueio / opt-out
+
+Adicionar arquivo local:
+
+data/blocked.json
+
+Se um número estiver nesse arquivo, não enviar.
+
+Adicionar uma opção para marcar um contato como "não enviar novamente".
+
+Nunca remover automaticamente um contato da lista de bloqueio.
+
+Segurança contra disparos acidentais
+
+Implementar:
+
+confirmação antes da campanha;
+
+modo de teste;
+
+resumo da quantidade;
+
+botão de cancelamento;
+
+botão de pausa;
+
+proteção contra duplo clique;
+
+impedir iniciar duas campanhas simultaneamente.
+
+Adicionar configuração:
+
+maxContactsPerCampaign
+
+com valor inicial conservador.
+
+Não implementar mecanismos para aumentar automaticamente o limite nem para contornar restrições do WhatsApp.
+
+Erros
+
+Tratar:
+
+WhatsApp Web desconectado;
+
+navegador fechado;
+
+página indisponível;
+
+contato inválido;
+
+timeout;
+
+erro de upload;
+
+erro de interface;
+
+campanha cancelada.
+
+Cada erro deve aparecer de maneira compreensível na interface.
+
+Não tentar infinitamente.
+
+Use número limitado de tentativas para erros transitórios, com backoff.
+
+Não fazer retries agressivos.
+
+Testes
+
+Criar testes unitários para:
+
+parser CSV;
+
+normalização de telefone;
+
+validação;
+
+substituição de {nome};
+
+bloqueados;
+
+opt-in;
+
+máquina de estados;
+
+pausa;
+
+cancelamento;
+
+logs.
+
+Não testar enviando mensagens reais durante os testes automatizados.
+
+Criar mock do WhatsAppService.
+
+README
+
+Criar README.md extremamente claro contendo:
+
+Instalação
+
+Comandos necessários.
+
+Desenvolvimento
+
+Como iniciar:
+
+npm install
+npm run dev
+
+Produção
+
+Como gerar o aplicativo.
+
+Uso
+
+Abrir aplicativo.
+
+Importar CSV.
+
+Confirmar contatos.
+
+Escrever mensagem.
+
+Selecionar imagem.
+
+Fazer teste.
+
+Confirmar campanha.
+
+Iniciar.
+
+WhatsApp Web
+
+Explicar que o usuário precisa autenticar o WhatsApp Web manualmente.
+
+Segurança
+
+Explicar que os dados ficam localmente.
+
+Consentimento
+
+Explicar que a aplicação deve ser usada somente com contatos que autorizaram as mensagens.
+
+Troubleshooting
+
+Explicar como lidar com:
+
+sessão desconectada;
+
+navegador não abre;
+
+campanha pausada;
+
+erro de envio;
+
+CSV inválido.
+
+Scripts package.json
+
+Criar scripts como:
+
+npm run dev
+npm run build
+npm run test
+npm run lint
+npm run typecheck
+npm run package
+
+Qualidade
+
+Quero código:
+
+TypeScript estrito;
+
+funções pequenas;
+
+sem código duplicado;
+
+tratamento de erros;
+
+comentários somente quando realmente necessários;
+
+nomes claros;
+
+componentes reutilizáveis.
+
+Não coloque toda a lógica em App.tsx.
+
+UX
+
+A interface deve deixar muito claro:
+
+🟢 enviado
+🔴 falhou
+🟡 pendente
+⚪ ignorado
+
+Mostrar barra de progresso.
+
+Exemplo:
+
+Campanha em andamento
+
+████████████░░░░░░ 62%
+
+155 / 250
+
+Enviados: 151
+Falharam: 4
+Pendentes: 95
+
+Entrega
+
+Depois de implementar:
+
+Instale as dependências.
+
+Rode typecheck.
+
+Rode testes.
+
+Rode build.
+
+Corrija erros encontrados.
+
+Verifique a estrutura final.
+
+Atualize README.
+
+Mostre um resumo dos arquivos criados.
+
+Mostre os comandos para executar.
+
+Não finja que o envio real foi testado se o WhatsApp Web não estiver disponível durante o desenvolvimento.
+
+Comece analisando o diretório atual.
+
+Se já houver arquivos, preserve o que for útil e adapte o projeto em vez de apagar tudo indiscriminadamente.
+
+Implemente a aplicação completa, não apenas um protótipo visual.
