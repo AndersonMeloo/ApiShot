@@ -24,8 +24,8 @@ Estado verificado em **2026-09-29**: `typecheck` ✅ · `lint` ✅ · `test` ✅
 
 ## P0 — Publicar no GitHub
 
-- [ ] `git init` na pasta do projeto, primeiro commit e `git remote add origin https://github.com/AndersonMeloo/ApiShot.git`
-- [ ] Conferir antes do push que `data/`, `.env`, `dist/` e `release/` **não** estão no stage (`git status`)
+- [x] `git init`, primeiro commit e push para https://github.com/AndersonMeloo/ApiShot.git (2026-09-29)
+- [x] Conferido que `data/`, `.env`, `dist/` e `release/` ficaram fora do commit
 - [ ] Mover `Arquitetura.txt` (é o prompt/especificação original) para `docs/SPEC-ORIGINAL.md` ou removê-lo
 - [ ] Escolher e adicionar uma `LICENSE`
 - [ ] Renomear a pasta local `whatsapp-campaign-manager` para `apishot` (com o VS Code fechado)

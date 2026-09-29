@@ -9,7 +9,7 @@
 - **Nome anterior:** *WhatsApp Campaign Manager*. A pasta local ainda se chama `whatsapp-campaign-manager`.
 - **Onde começar a ler:** [core/campaignRunner.ts](../core/campaignRunner.ts) (o coração), [backend/campaignService.ts](../backend/campaignService.ts) (as proteções), [backend/whatsapp/playwrightWhatsAppService.ts](../backend/whatsapp/playwrightWhatsAppService.ts) (a automação).
 - **Comandos:** `npm run dev` · `npm run typecheck && npm run lint && npm run test` · `npm run package`.
-- **Estado:** v1.0.0 funcional. Checagens verdes em 2026-09-29 (107 testes). Ainda não versionado em git.
+- **Estado:** v1.0.0 funcional. Checagens verdes em 2026-09-29 (107 testes). Versionado em git; branch `main` publicada no GitHub em 2026-09-29.
 
 ## Mapa de documentos
 
